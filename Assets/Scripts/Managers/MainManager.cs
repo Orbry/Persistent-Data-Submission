@@ -40,7 +40,11 @@ public class MainManager : Singleton<MainManager>
 
     private void Update()
     {
-        if (!m_Started)
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+        else if (!m_Started)
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
