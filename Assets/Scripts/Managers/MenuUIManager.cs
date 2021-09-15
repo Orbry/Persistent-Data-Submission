@@ -2,26 +2,33 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class MenuManager : Singleton<MenuManager>
+public class MenuUIManager : MonoBehaviour
 {
     public GameObject highscore;
     public GameObject highscoreFull;
     public GameObject menu;
-    public string playerName;
+    public TMP_InputField nameInput;
     
-    protected override void Awake()
+    private void Start()
     {
-        DontDestroyOnLoad(gameObject);
+        // TODO: get highscores from HighscoreManager and display them
+
+        string playerName = PlayerManager.Instance.playerName;
+        if (playerName != "")
+        {
+            nameInput.text = playerName;
+        }
     }
 
     public void UpdatePlayerName(string playerName)
     {
-        this.playerName = playerName;
+        PlayerManager.Instance.playerName = playerName;
     }
     
     public void StartGame()
