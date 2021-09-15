@@ -12,7 +12,7 @@ public class GameplayManager : Singleton<GameplayManager>
     public Rigidbody Ball;
 
     public Text ScoreText;
-    public TMP_InputField BestScoreText;
+    public TMP_Text BestScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -38,6 +38,8 @@ public class GameplayManager : Singleton<GameplayManager>
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        BestScoreText.text = HighscoreManager.Instance.Highscores[0].ToString();
     }
 
     private void Update()
@@ -77,6 +79,7 @@ public class GameplayManager : Singleton<GameplayManager>
     public void GameOver()
     {
         m_GameOver = true;
+        HighscoreManager.Instance.AddHighscore(PlayerManager.Instance.playerName, m_Points);
         GameOverText.SetActive(true);
     }
 }

@@ -10,8 +10,7 @@ public class HighscoreManager : Singleton<HighscoreManager>
 {
     private string saveFileName = "highscores.json";
     private string saveFilePath;
-    // TODO: delete serialization
-    [SerializeField] private Highscore[] highscores;
+    private Highscore[] highscores;
 
     public Highscore[] Highscores
     {
@@ -70,7 +69,6 @@ public class HighscoreManager : Singleton<HighscoreManager>
             }
         }
 
-        // TODO: probably should just move this into loop body
         if (insertionIndex >= 0)
         {
             // shifting lower scores in array
