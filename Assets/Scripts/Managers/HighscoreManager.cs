@@ -10,8 +10,18 @@ public class HighscoreManager : Singleton<HighscoreManager>
 {
     private string saveFileName = "highscores.json";
     private string saveFilePath;
+    // TODO: delete serialization
     [SerializeField] private Highscore[] highscores;
 
+    public Highscore[] Highscores
+    {
+        get
+        {
+            // since Highscore is immutable it's ok to give shallow copy of array
+            return (Highscore[])highscores.Clone();
+        }
+    }
+    
     protected override void Awake()
     {
         base.Awake();
@@ -19,13 +29,17 @@ public class HighscoreManager : Singleton<HighscoreManager>
         highscores = new Highscore[10];
         LoadHighscores();
         DontDestroyOnLoad(gameObject);
-
-        // TODO: delete
-        Debug.Log($"Saves path -> {saveFilePath}");
-        //MakeData();
-        //SaveHighscores();
     }
-    
+
+    private void OnDestroy()
+    {
+        // preventing destroyed duplicates of HighscoreManager from saving
+        if (HighscoreManager.Instance == this)
+        {
+            SaveHighscores();
+        }
+    }
+
     private void LoadHighscores()
     {
         if (File.Exists(saveFilePath))
@@ -42,17 +56,6 @@ public class HighscoreManager : Singleton<HighscoreManager>
         File.WriteAllText(saveFilePath, json);
     }
     
-    // TODO: delete
-    private void MakeData()
-    {
-        string[] names = new[] { "John", "Mary", "Alex", "Joni", "Tyyne" };
-        int[] scores = new[] { 10, 25, 13, 42, 30 };
-        
-        for (int i = 0; i < names.Length; i++) {
-            highscores[i] = new Highscore(names[i], scores[i]);
-        }
-    }
-    
     public void AddHighscore(string playerName, int score)
     {
         Highscore newHighscore = new Highscore(playerName, score);
@@ -67,8 +70,10 @@ public class HighscoreManager : Singleton<HighscoreManager>
             }
         }
 
+        // TODO: probably should just move this into loop body
         if (insertionIndex >= 0)
         {
+            // shifting lower scores in array
             Array.Copy(highscores, insertionIndex, highscores, insertionIndex + 1, highscores.Length - insertionIndex - 1);
             highscores[insertionIndex] = newHighscore;
         }
