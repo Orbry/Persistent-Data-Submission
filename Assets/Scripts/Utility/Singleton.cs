@@ -19,7 +19,7 @@ abstract public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
         if (instance != null)
         {
-            Destroy(this);
+            Destroy(gameObject);
             Debug.LogWarning($"An additional instance of \"{typeof(T).Name}\" was destroyed!");
         } else
             instance = (T)this;
