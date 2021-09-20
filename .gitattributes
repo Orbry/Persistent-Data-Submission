@@ -1,2 +1,6 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Fixing github language detection
+* linguist-vendored
+*.cs linguist-vendored=false
